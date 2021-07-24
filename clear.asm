@@ -92,8 +92,6 @@ ClearRegisters:
     ; ---- custom registers
 
     stz @frame_counter
-    stz @wall_count
-    stz @target_count
     stz @crate_count
 
     rts

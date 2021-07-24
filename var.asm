@@ -10,12 +10,8 @@ joy1_press:               .rb 2
 joy1_held:                .rb 2
 
 current_level:            .rb 3
-level_tiles:              .rb LEVEL_SIZE ; maybe useless
+level_tiles:              .rb LEVEL_SIZE
 
-wall_count:               .rb 1
-wall_positions:           .rb LEVEL_SIZE
-target_count:             .rb 1
-target_positions:         .rb MAX_CRATES
 crate_count:              .rb 1
 crate_positions:          .rb MAX_CRATES
 

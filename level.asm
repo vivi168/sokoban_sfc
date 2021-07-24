@@ -5,12 +5,18 @@
 ; 0 0 0 000 0 0
 ; GROUND = 00, TARGET = 01 02 03 04, WALL = 05
 
+; tile definition in level.txt
 .define GROUND   20 ; \s
 .define TARGET   2e ; .
 .define WALL     23 ; #
 .define CRATE    24 ; $
 .define PLAYER   40 ; @
 .define NEWLINE  0a ; \n
+
+; tiles enum
+.define GROUND_T 00
+.define TARGET_T 01
+.define WALL_T   02
 
 .define TILEMAP_SIZE 400
 
@@ -31,6 +37,24 @@ clear_buffer_loop:
 
     plp
     rts
+
+ResetLevel:
+    php
+
+    sep #30
+    lda #GROUND_T
+    ldx #00
+
+reset_level_loop:
+    sta @level_tiles,x
+
+    inx
+    cpx #LEVEL_SIZE
+    bne @reset_level_loop
+
+    plp
+    rts
+
 
 ReadLevel:
     php
@@ -68,29 +92,39 @@ read_lv_loop:
     sta 01
 
 ;-----
-
     cmp #TARGET
     bne @is_wall
 
-    ldx @target_count
-    lda 05
-    sta @target_positions,x
-    inc @target_count
+    ldx 05
+    lda #TARGET_T
+    sta @level_tiles,x
 
 is_wall:
     lda 01
     cmp #WALL
     bne @is_crate
 
+    ldx 05
+    lda #WALL_T
+    sta @level_tiles,x
+
 is_crate:
     lda 01
     cmp #CRATE
     bne @is_player
 
+    ldx @crate_count
+    lda 05
+    sta @crate_positions,x
+    inc @crate_count
+
 is_player:
     lda 01
     cmp #PLAYER
     bne @is_newline
+
+    lda 05
+    sta @player_position
 
 is_newline:
     lda 01
@@ -118,7 +152,6 @@ read_next_tile:
     lda 01  ; \0 -> end of file
     bne @read_lv_loop
 
-
     ; restore stack frame
     tsc
     clc
@@ -127,4 +160,7 @@ read_next_tile:
 
     pld
     plp
+    rts
+
+LevelToBuffer:
     rts

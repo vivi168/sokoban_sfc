@@ -29,6 +29,7 @@ FastReset:
     sta @current_level+2
 
     jsr @InitTilemapBuffer
+    jsr @ReadLevel
 
     ; ---- BG settings
     lda #01

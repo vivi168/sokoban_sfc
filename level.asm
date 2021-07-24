@@ -8,12 +8,9 @@
 .define GROUND   20 ; \s
 .define TARGET   2e ; .
 .define WALL     23 ; #
-.define PLAYER   40 ; @
 .define CRATE    24 ; $
-
-.define LV_W     10
-.define LV_H     0e
-.define LV_S     e0
+.define PLAYER   40 ; @
+.define NEWLINE  0a ; \n
 
 .define TILEMAP_SIZE 400
 
@@ -21,19 +18,16 @@ InitTilemapBuffer:
     php
     ; @tilemap_buffer
 
-    rep #30
+    rep #30 ; A X 16
 
-    ldx #00
+    ldx #0000
 clear_buffer_loop:
     ; TODO replace with DMA?
-    lda #0000; 000
+    lda #0000
     sta !tilemap_buffer,x
     inx
     cpx #TILEMAP_BUFFER_SIZE
     bne @clear_buffer_loop
-
-    ; ---- Read level
-    jsr @ReadLevel
 
     plp
     rts
@@ -42,14 +36,15 @@ ReadLevel:
     php
     phd
     ; here build map from level.txt
-    sep #20
+    sep #20 ; A 8
     ; local stack frame
-    ; reserve 4 bytes
+    ; reserve 6 bytes
     ; 01 -> current tile
     ; 02 -> curent_level low
     ; 03 -> current_level high
     ; 04 -> current_level bank
-    ; 05/06 -> calculation result
+    ; 05 -> i
+    ; 06 -> l
     tsc
     sec
     sbc #06
@@ -61,29 +56,64 @@ ReadLevel:
     lda @current_level+2
     sta 04
 
-    brk 00
+    stz 05
+    stz 06
 
-    ldy #0000
+    sep #10 ; X 8
+
+    ldy #00
 read_lv_loop:
     ; read tile from current_level
     lda [02],y
     sta 01
 
-    rep #20
-    ; x = i & 15
-    tya
-    and #000f
-    ; y = i >> 4
+;-----
 
+    cmp #TARGET
+    bne @is_wall
 
-    ; determine tile no
+    ldx @target_count
+    lda 05
+    sta @target_positions,x
+    inc @target_count
 
-    ; first index = [x + (y << 5)] << 2
-    ; second index = first + 2
-    ; third index = first + 64
-    ; fourth index = thrid + 2
-    sep #20
+is_wall:
+    lda 01
+    cmp #WALL
+    bne @is_crate
 
+is_crate:
+    lda 01
+    cmp #CRATE
+    bne @is_player
+
+is_player:
+    lda 01
+    cmp #PLAYER
+    bne @is_newline
+
+is_newline:
+    lda 01
+    cmp #NEWLINE
+    bne @unknown_tile
+
+    ; i += LEVEL_W - l;
+    lda #LEVEL_W
+    sec
+    sbc 06
+    clc
+    adc 05
+    sta 05
+    ; l = 0
+    stz 06
+    bra @read_next_tile
+
+unknown_tile:
+    inc 05
+    inc 06
+
+;-----
+read_next_tile:
     iny
     lda 01  ; \0 -> end of file
     bne @read_lv_loop

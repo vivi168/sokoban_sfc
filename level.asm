@@ -6,6 +6,8 @@
 ; GROUND = 00, TARGET = 01 02 03 04, WALL = 05
 
 ; tile definition in level.txt
+; should replace char by 0, 1, 2, 3... to be able to have a look up table and spare cycles
+; python script to convert txt level to bin
 .define GROUND_CHAR   20 ; \s
 .define TARGET_CHAR   2e ; .
 .define WALL_CHAR     23 ; #
@@ -20,6 +22,10 @@
 
 .define TILEMAP_SIZE 400
 
+; ************
+; Reset tile map buffer to empty tiles (GROUND)
+; this is useless after LevelToBuffer is done
+; ************
 InitTilemapBuffer:
     php
     ; @tilemap_buffer
@@ -55,20 +61,22 @@ reset_level_loop:
     plp
     rts
 
-
+; ************
+; Construct level_tiles array, init player and crates positions
+; from level file definition
+; ************
 ReadLevel:
     php
     phd
-    ; here build map from level.txt
     sep #20 ; A 8
     ; local stack frame
     ; reserve 6 bytes
-    ; 01 -> current tile
+    ; 01 -> current tile char
     ; 02 -> curent_level low
     ; 03 -> current_level high
     ; 04 -> current_level bank
-    ; 05 -> i
-    ; 06 -> l
+    ; 05 -> index in level_tile array
+    ; 06 -> length of current line
     tsc
     sec
     sbc #06
@@ -162,5 +170,10 @@ read_next_tile:
     plp
     rts
 
+; ************
+; Construct level_tiles array, init player and crates positions
+; from level file definition
+; ************
 LevelToBuffer:
+    ; look up table
     rts

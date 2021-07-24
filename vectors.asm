@@ -31,6 +31,7 @@ FastReset:
     jsr @InitTilemapBuffer
     jsr @ResetLevel
     jsr @ReadLevel
+    jsr @LevelToBuffer
 
     ; ---- BG settings
     lda #01

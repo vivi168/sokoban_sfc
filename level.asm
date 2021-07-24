@@ -6,12 +6,12 @@
 ; GROUND = 00, TARGET = 01 02 03 04, WALL = 05
 
 ; tile definition in level.txt
-.define GROUND   20 ; \s
-.define TARGET   2e ; .
-.define WALL     23 ; #
-.define CRATE    24 ; $
-.define PLAYER   40 ; @
-.define NEWLINE  0a ; \n
+.define GROUND_CHAR   20 ; \s
+.define TARGET_CHAR   2e ; .
+.define WALL_CHAR     23 ; #
+.define CRATE_CHAR    24 ; $
+.define PLAYER_CHAR   40 ; @
+.define NEWLINE_CHAR  0a ; \n
 
 ; tiles enum
 .define GROUND_T 00
@@ -92,7 +92,7 @@ read_lv_loop:
     sta 01
 
 ;-----
-    cmp #TARGET
+    cmp #TARGET_CHAR
     bne @is_wall
 
     ldx 05
@@ -101,7 +101,7 @@ read_lv_loop:
 
 is_wall:
     lda 01
-    cmp #WALL
+    cmp #WALL_CHAR
     bne @is_crate
 
     ldx 05
@@ -110,7 +110,7 @@ is_wall:
 
 is_crate:
     lda 01
-    cmp #CRATE
+    cmp #CRATE_CHAR
     bne @is_player
 
     ldx @crate_count
@@ -120,7 +120,7 @@ is_crate:
 
 is_player:
     lda 01
-    cmp #PLAYER
+    cmp #PLAYER_CHAR
     bne @is_newline
 
     lda 05
@@ -128,7 +128,7 @@ is_player:
 
 is_newline:
     lda 01
-    cmp #NEWLINE
+    cmp #NEWLINE_CHAR
     bne @unknown_tile
 
     ; i += LEVEL_W - l;

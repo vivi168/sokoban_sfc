@@ -175,5 +175,20 @@ read_next_tile:
 ; from level file definition
 ; ************
 LevelToBuffer:
-    ; look up table
+    php
+
+
+    nop
+process_ground:
+    nop
+process_target:
+    nop
+process_wall:
+
+    plp
     rts
+
+tile_lut:
+ground_lu: .db @process_ground
+target_lu: .db @process_target
+wall_lu:   .db @process_wall

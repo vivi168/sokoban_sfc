@@ -106,18 +106,18 @@ read_lv_loop:
     ldx 05
     lda #TARGET_T
     sta @level_tiles,x
+    bra @unknown_tile
 
 is_wall:
-    lda 01
     cmp #WALL_CHAR
     bne @is_crate
 
     ldx 05
     lda #WALL_T
     sta @level_tiles,x
+    bra @unknown_tile
 
 is_crate:
-    lda 01
     cmp #CRATE_CHAR
     bne @is_player
 
@@ -125,17 +125,17 @@ is_crate:
     lda 05
     sta @crate_positions,x
     inc @crate_count
+    bra @unknown_tile
 
 is_player:
-    lda 01
     cmp #PLAYER_CHAR
     bne @is_newline
 
     lda 05
     sta @player_position
+    bra @unknown_tile
 
 is_newline:
-    lda 01
     cmp #NEWLINE_CHAR
     bne @unknown_tile
 

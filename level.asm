@@ -22,28 +22,6 @@
 
 .define TILEMAP_SIZE 400
 
-; ************
-; Reset tile map buffer to empty tiles (GROUND)
-; this is useless after LevelToBuffer is done
-; ************
-InitTilemapBuffer:
-    php
-    ; @tilemap_buffer
-
-    rep #30 ; A X 16
-
-    ldx #0000
-clear_buffer_loop:
-    ; TODO replace with DMA?
-    lda #0000
-    sta !tilemap_buffer,x
-    inx
-    cpx #TILEMAP_BUFFER_SIZE
-    bne @clear_buffer_loop
-
-    plp
-    rts
-
 ResetLevel:
     php
 
@@ -171,22 +149,150 @@ read_next_tile:
     rts
 
 ; ************
-; Construct level_tiles array, init player and crates positions
-; from level file definition
+; Reset tile map buffer to empty tiles (GROUND)
 ; ************
-LevelToBuffer:
+ResetTilemapBuffer:
     php
+    ; @tilemap_buffer
 
+    rep #30 ; A X 16
 
-    nop
-process_ground:
-    nop
-process_target:
-    nop
-process_wall:
+    ldx #0000
+clear_buffer_loop:
+    ; TODO replace with DMA?
+    lda #0000
+    sta !tilemap_buffer,x
+    inx
+    cpx #TILEMAP_BUFFER_SIZE
+    bne @clear_buffer_loop
 
     plp
     rts
+
+; ************
+; Construct level_tiles array, init player and crates positions
+; from level file definition
+; ************
+InitTilemapBuffer:
+    php
+    phd
+
+    sep #30
+    ; reserve bytes on stack
+    ; 01/02 first tile
+    ; 03/04 second tile
+    ; 05/06 third tile
+    ; 07/08 fourth tile
+    tsc
+    sec
+    sbc #08
+    tcs
+    tcd
+
+    ; set tiles data here
+    brk 00
+    ldy #00 ; X 8
+set_tiles_loop:
+    ; compute coordinates here
+    rep #30
+
+    tya
+    ; y = i // 16
+    lsr
+    lsr
+    lsr
+    lsr
+    ; y *= 32
+    asl
+    asl
+    asl
+    asl
+    asl
+
+    sta 01
+    tya
+    ; x = i % 16
+    and #000f
+
+    ; i = y + x
+    clc
+    adc 01
+
+    ; i *= 4
+    asl
+    asl
+
+    sta 01      ; first = i
+    clc
+    adc #0002
+    sta 03      ; second = first + 2
+    clc
+    adc #003e
+    sta 05      ; third = first + 64
+    clc
+    adc #0002
+    sta 07      ; fourth = third + 2
+
+    sep #30
+    lda @level_tiles,y
+    asl
+    tax
+    jmp (@tile_lut,x)
+
+; -----
+continue_set_tile_loop:
+    sep #30
+    iny
+    cpy #LEVEL_SIZE
+    bne @set_tiles_loop
+
+    ; restore stack frame
+    tsc
+    clc
+    adc #08
+    tcs
+
+    pld
+    plp
+    rts
+
+process_ground:
+    jmp @continue_set_tile_loop
+process_target:
+    rep #30
+
+    lda #0001
+    ldx 01
+    sta !tilemap_buffer,x
+
+    lda #0002
+    ldx 03
+    sta !tilemap_buffer,x
+
+    lda #0003
+    ldx 05
+    sta !tilemap_buffer,x
+
+    lda #0004
+    ldx 07
+    sta !tilemap_buffer,x
+
+    jmp @continue_set_tile_loop
+process_wall:
+    rep #30
+
+    lda #0005
+
+    ldx 01
+    sta !tilemap_buffer,x
+    ldx 03
+    sta !tilemap_buffer,x
+    ldx 05
+    sta !tilemap_buffer,x
+    ldx 07
+    sta !tilemap_buffer,x
+
+    jmp @continue_set_tile_loop
 
 tile_lut:
 ground_lu: .db @process_ground

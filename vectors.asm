@@ -28,10 +28,10 @@ FastReset:
     lda #^level1            ; BB
     sta @current_level+2
 
-    jsr @InitTilemapBuffer
     jsr @ResetLevel
     jsr @ReadLevel
-    jsr @LevelToBuffer
+    jsr @ResetTilemapBuffer
+    jsr @InitTilemapBuffer
 
     ; ---- BG settings
     lda #01

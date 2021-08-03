@@ -6,6 +6,7 @@ tileset_palette:          .incbin assets/tileset-pal.bin
 spritesheet:              .incbin assets/sprites.bin
 spritesheet_pal:          .incbin assets/sprites-pal.bin
 level1:                   .incbin assets/level1.txt
+level2:                   .incbin assets/level2.txt
 
 .define TILEMAP_BUFFER_SIZE 0800
 .define TILESET_SIZE 00c0

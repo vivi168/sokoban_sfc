@@ -190,7 +190,6 @@ InitTilemapBuffer:
     tcd
 
     ; set tiles data here
-    brk 00
     ldy #00 ; X 8
 set_tiles_loop:
     ; compute coordinates here

@@ -24,4 +24,14 @@ MainLoop:
 
     jmp @MainLoop
 
+
+MovePlayer:
+    rts
+
+MoveCrate:
+    rts
+
+HasWon:
+    rts
+
 .include info.asm

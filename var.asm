@@ -12,10 +12,9 @@ joy1_held:                .rb 2
 current_level:            .rb 3
 level_tiles:              .rb LEVEL_SIZE
 
-crate_count:              .rb 1
-crate_positions:          .rb MAX_CRATES
-
 player_position:          .rb 1
+crate_positions:          .rb MAX_CRATES
+crate_count:              .rb 1
 
 frame_counter:            .rb 1
 

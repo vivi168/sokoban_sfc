@@ -60,6 +60,9 @@ FastReset:
     jsr @InitOamBuffer
     jsr @TransferOamBuffer
 
+    jsr @InitPlayerOamBuffer
+    jsr @InitCratesOamBuffer
+
     ; ---- DMA transfers ---
     ; Copy tilemap buffer to VRAM
     tsx                 ; save stack pointer

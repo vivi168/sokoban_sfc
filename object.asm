@@ -195,20 +195,33 @@ skip_shift_bit_mask:
 ;**************************************
 ; update player position
 ;**************************************
-UpdateObjPosition:
-    php
-
-    ; x = i % 16
-    ; y = i / 16
+UpdatePlayerOamBuffer:
+    ;x
     lda @player_position
-    rep #20
-    and #00ff
+    and #0f
+    asl
+    asl
+    asl
+    asl
+    sta !oam_buffer
 
-    plp
+    ;y
+    lda @player_position
+    lsr
+    lsr
+    lsr
+    lsr
+    asl
+    asl
+    asl
+    asl
+    sta !oam_buffer+1
+
     rts
 
 ;**************************************
 ; update crates positions
 ;**************************************
-UpdateCratePos:
+UpdateCratesOamBuffer:
+    ; here should check if crate is on target tile, if so, switches its palette
     rts

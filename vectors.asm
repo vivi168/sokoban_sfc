@@ -40,7 +40,7 @@ FastReset:
     lda #00    ; first write = lower byte
     sta BG1HOFS         ; horizontal scroll ;
     sta BG1HOFS         ; second write = upper 2 bits
-    lda #00             ; vertical scroll. caution, offset by -1
+    lda #ff             ; vertical scroll. caution, offset by -1
     sta BG1VOFS
     lda #00
     sta BG1VOFS
@@ -58,10 +58,10 @@ FastReset:
     sta OBJSEL          ; oam start @VRAM[8000]
 
     jsr @InitOamBuffer
-    jsr @TransferOamBuffer
-
     jsr @InitPlayerOamBuffer
     jsr @InitCratesOamBuffer
+
+    jsr @TransferOamBuffer
 
     ; ---- DMA transfers ---
     ; Copy tilemap buffer to VRAM

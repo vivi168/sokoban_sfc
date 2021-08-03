@@ -27,4 +27,46 @@ read_joy1_data:
     rts
 
 HandleInput:
+    php
+
+    rep #20
+    lda @joy1_press
+
+    bit #JOY_UP
+    bne @move_up
+
+    bit #JOY_DOWN
+    bne @move_down
+
+    bit #JOY_LEFT
+    bne @move_left
+
+    bit #JOY_RIGHT
+    bne @move_right
+
+    bra @exit_handle_input
+
+move_up:
+    sep #20
+    lda #LEVEL_W
+    eor #ff
+    inc             ; a = -level_w
+    bra @move_player
+move_down:
+    sep #20
+    lda #LEVEL_W
+    bra @move_player
+move_left:
+    sep #20
+    lda #ff
+    bra @move_player
+move_right:
+    sep #20
+    lda #01
+
+move_player:
+    jsr @MovePlayer
+
+exit_handle_input:
+    plp
     rts

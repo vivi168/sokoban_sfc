@@ -225,12 +225,10 @@ UpdateCratesOamBuffer:
     ldy #00
 
 update_crates_loop:
-
-    tyx
-    lda @crate_positions,x
+    lda @crate_positions,y
     pha
 
-    txa
+    tya
     inc
     asl
     asl
@@ -255,10 +253,26 @@ update_crates_loop:
     asl
     sta !oam_buffer+1,x
 
+    lda #30             ; vhppcccn
+    sta !oam_buffer+3,x
+
     pla
-
+    tax
     ; here check if crate is on target to change its palette
+    lda #TARGET_T
+    cmp @level_tiles,x
+    bne @continue_update_crates_loop
 
+    tya
+    inc
+    asl
+    asl
+    tax
+
+    lda #32             ; vhppcccn
+    sta !oam_buffer+3,x
+
+continue_update_crates_loop:
     iny
     cpy @crate_count
     bne @update_crates_loop

@@ -81,21 +81,17 @@ InitCratesOamBuffer:
     sep #30
 
     ; create stack frame
-    ; 01 -> crate count
-    ; 02 -> crate_positions[i]
+    ; 01 -> crate_positions[i]
     tsc
-    sec
-    sbc #02
+    dec
     tcs
     tcd
 
-    lda @crate_count
-    sta 01
     ldx #00
 
 init_crates:
     lda @crate_positions,x
-    sta 02
+    sta 01
 
     phx
     ; ----
@@ -109,7 +105,7 @@ init_crates:
     ; ---- set oam buffer data
 
     ;x
-    lda 02
+    lda 01
     and #0f
     asl
     asl
@@ -118,7 +114,7 @@ init_crates:
     sta !oam_buffer,x
 
     ;y
-    lda 02
+    lda 01
     lsr
     lsr
     lsr
@@ -180,13 +176,12 @@ skip_shift_bit_mask:
     plx
 
     inx
-    cpx 01
+    cpx @crate_count
     bne @init_crates
 
     ; restore stack frame
     tsc
-    clc
-    adc #02
+    inc
     tcs
 
     plp
@@ -223,5 +218,50 @@ UpdatePlayerOamBuffer:
 ; update crates positions
 ;**************************************
 UpdateCratesOamBuffer:
-    ; here should check if crate is on target tile, if so, switches its palette
+    php
+
+    sep #30
+
+    ldy #00
+
+update_crates_loop:
+
+    tyx
+    lda @crate_positions,x
+    pha
+
+    txa
+    inc
+    asl
+    asl
+    tax
+
+    lda 1,s
+    and #0f
+    asl
+    asl
+    asl
+    asl
+    sta !oam_buffer,x
+
+    lda 1,s
+    lsr
+    lsr
+    lsr
+    lsr
+    asl
+    asl
+    asl
+    asl
+    sta !oam_buffer+1,x
+
+    pla
+
+    ; here check if crate is on target to change its palette
+
+    iny
+    cpy @crate_count
+    bne @update_crates_loop
+
+    plp
     rts

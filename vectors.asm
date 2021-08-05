@@ -45,24 +45,12 @@ FastReset:
     lda #62             ; sprite 16x16 small, 32x32 big
     sta OBJSEL          ; oam start @VRAM[8000]
 
- ;  ---- Some initialization
-
+    ;  ---- Some initialization
     jsr @SetCurrentLevel
-
     jsr @InitLevel
 
+    jsr @TransferBG1Buffer
     jsr @TransferOamBuffer
-
-    ; ---- DMA transfers ---
-    ; Copy tilemap buffer to VRAM
-    tsx                 ; save stack pointer
-    pea 2000            ; vram dest addr (@4000 really, word steps)
-    pea @tilemap_buffer
-    lda #^tilemap_buffer
-    pha
-    pea TILEMAP_BUFFER_SIZE    ; nb of bytes to transfer
-    jsr @VramDmaTransfer
-    txs                 ; restore stack pointer
 
     ; Copy tileset.bin to VRAM
     tsx                 ; save stack pointer
@@ -137,16 +125,7 @@ NmiVector:
 
     inc @frame_counter
 
-    ; Copy tilemap buffer to VRAM
-    tsx                 ; save stack pointer
-    pea 2000            ; vram dest addr (@4000 really, word steps)
-    pea @tilemap_buffer
-    lda #^tilemap_buffer
-    pha
-    pea TILEMAP_BUFFER_SIZE    ; nb of bytes to transfer
-    jsr @VramDmaTransfer
-    txs                 ; restore stack pointer
-
+    jsr @TransferBG1Buffer
     jsr @TransferOamBuffer
 
     jsr @ReadJoyPad1

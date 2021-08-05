@@ -82,3 +82,16 @@ TransferOamBuffer:
     lda #01
     sta MDMAEN
     rts
+
+TransferBG1Buffer:
+    ; Copy tilemap buffer to VRAM
+    tsx                 ; save stack pointer
+    pea 2000            ; vram dest addr (@4000 really, word steps)
+    pea @tilemap_buffer
+    lda #^tilemap_buffer
+    pha
+    pea TILEMAP_BUFFER_SIZE    ; nb of bytes to transfer
+    jsr @VramDmaTransfer
+    txs                 ; restore stack pointer
+
+    rts

@@ -362,4 +362,5 @@ RestartLevel:
     sep #20
     rep #10
     jsr @InitLevel
+
     jmp @MainLoop

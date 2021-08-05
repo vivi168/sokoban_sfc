@@ -10,11 +10,14 @@ joy1_press:               .rb 2
 joy1_held:                .rb 2
 
 current_level:            .rb 3
+level_no:                 .rb 1
 level_tiles:              .rb LEVEL_SIZE
 
 player_position:          .rb 1
 crate_positions:          .rb MAX_CRATES
 crate_count:              .rb 1
+
+step_count:               .rb 2
 
 frame_counter:            .rb 1
 

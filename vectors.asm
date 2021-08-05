@@ -21,18 +21,6 @@ FastReset:
     sta INIDISP
     jsr @ClearRegisters
 
-    ;  ---- Some initialization
-    ; store current level address
-    ldx #@level1            ; LL HH
-    stx @current_level
-    lda #^level1            ; BB
-    sta @current_level+2
-
-    jsr @ResetLevel
-    jsr @ReadLevel
-    jsr @ResetTilemapBuffer
-    jsr @InitTilemapBuffer
-
     ; ---- BG settings
     lda #01
     sta BGMODE
@@ -56,6 +44,18 @@ FastReset:
     ; --- OBJ settings
     lda #62             ; sprite 16x16 small, 32x32 big
     sta OBJSEL          ; oam start @VRAM[8000]
+
+ ;  ---- Some initialization
+    ; store current level address
+    ldx #@level1            ; LL HH
+    stx @current_level
+    lda #^level1            ; BB
+    sta @current_level+2
+
+    jsr @ResetLevel
+    jsr @ReadLevel
+    jsr @ResetTilemapBuffer
+    jsr @InitTilemapBuffer
 
     jsr @InitOamBuffer
     jsr @InitPlayerOamBuffer

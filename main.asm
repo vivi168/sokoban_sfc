@@ -57,7 +57,7 @@ check_crate_collide:
     lda @player_position
     jsr @IsOnCrate
     cmp #ff
-    beq @exit_move_player
+    beq @increase_step_count
 
     ; try to move crate here
     tax ; crate index
@@ -65,11 +65,17 @@ check_crate_collide:
     jsr @MoveCrate
     ; here, check if MoveCrate result is 0 -> exit move player
     ; if result is 1 -> restore crate position AND player position
-    beq @exit_move_player
+    beq @increase_step_count
 
 restore_player_position:
     lda 1,s
     sta @player_position
+    bra @exit_move_player
+
+increase_step_count:
+    rep #20
+    inc @step_count
+    sep #20
 
 exit_move_player:
     pla

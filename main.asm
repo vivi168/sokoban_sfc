@@ -211,7 +211,7 @@ continue_has_won_loop:
     cmp 01
     bne @exit_has_won
 
-    jmp @ResetVector
+    jmp @NextLevel
 
 exit_has_won:
     ; restore stack frame

@@ -70,6 +70,7 @@ ReadLevel:
     stz 06
 
     sep #10 ; X 8
+    stz @crate_count
 
     ldy #00
 read_lv_loop:
@@ -297,3 +298,68 @@ tile_lut:
 ground_lu: .db @process_ground
 target_lu: .db @process_target
 wall_lu:   .db @process_wall
+
+SetCurrentLevel:
+    php
+    phb
+
+
+    lda !level_bank
+    pha
+    plb
+
+    sta @current_level+2
+
+    rep #20
+    lda @level_no
+    and #00ff
+    asl
+    tax
+    lda @level_lut+1,x
+    sta @current_level
+
+    plb
+    plp
+    rts
+
+InitLevel:
+    rep #20
+    stz @step_count
+    sep #20
+
+    jsr @ResetLevel
+    jsr @ReadLevel
+    jsr @ResetTilemapBuffer
+    jsr @InitTilemapBuffer
+
+    jsr @InitOamBuffer
+    jsr @InitPlayerOamBuffer
+    jsr @InitCratesOamBuffer
+
+    rts
+
+NextLevel:
+    sep #20
+    rep #10
+    inc @level_no
+
+    jsr @SetCurrentLevel
+    jsr @InitLevel
+
+    jmp @MainLoop
+
+PrevLevel:
+    sep #20
+    rep #10
+    dec @level_no
+
+    jsr @SetCurrentLevel
+    jsr @InitLevel
+
+    jmp @MainLoop
+
+RestartLevel:
+    sep #20
+    rep #10
+    jsr @InitLevel
+    jmp @MainLoop

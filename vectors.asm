@@ -47,34 +47,9 @@ FastReset:
 
  ;  ---- Some initialization
 
-    ; store current level address
-    phb
+    jsr @SetCurrentLevel
 
-    lda !level_bank
-    pha
-    plb
-
-    sta @current_level+2
-
-    rep #20
-    lda @level_no
-    and #00ff
-    asl
-    tax
-    lda @level_lut+1,x
-    sta @current_level
-    sep #20
-
-    plb
-
-    jsr @ResetLevel
-    jsr @ReadLevel
-    jsr @ResetTilemapBuffer
-    jsr @InitTilemapBuffer
-
-    jsr @InitOamBuffer
-    jsr @InitPlayerOamBuffer
-    jsr @InitCratesOamBuffer
+    jsr @InitLevel
 
     jsr @TransferOamBuffer
 

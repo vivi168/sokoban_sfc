@@ -92,11 +92,8 @@ ClearRegisters:
     ; ---- custom registers
 
     stz @frame_counter
-    stz @crate_count
     stz @level_no
 
-    rep #20
-    stz @step_count
-    sep #20
+
 
     rts

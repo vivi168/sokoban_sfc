@@ -53,6 +53,7 @@ MovePlayer:
 
     ; check if land on crate
 check_crate_collide:
+    ldx #ff
     lda @player_position
     jsr @IsOnCrate
     cmp #ff
@@ -95,6 +96,14 @@ MoveCrate:
     cmp #WALL_T
     beq @restore_crate_position
 
+    lda 3,s
+    tax
+    lda @crate_positions,x
+    jsr @IsOnCrate
+
+    cmp #ff
+    bne @restore_crate_position
+
     ldx #00 ; 00 -> moved
     bra @exit_move_crate
 
@@ -115,27 +124,46 @@ exit_move_crate:
 
     rts
 
-; input : A -> player position
+; input : A -> input position
+; input : X -> index to ignore
 ; output : A -> crate index if is on crate, 0xff if is not on crate
 IsOnCrate:
+brk 00
+    phx ; save index to ignore
+    pha ; save player position
+    phd
+    tsc
+    tcd
+
+    ; 03 -> input position
+    ; 04 -> index to ignore
+
+
     ldx #00
+    lda 03
 
 is_on_crate_loop:
-    cmp @crate_positions,x
-    beq @is_on_crate ; found, exit loop
+    ; here, ignore if x == index to ignore
+    cpx 04
+    beq @next_is_on_crate_loop
 
+    cmp @crate_positions,x
+    beq @exit_is_on_crate ; found, exit loop
+
+next_is_on_crate_loop:
     inx
     cpx @crate_count
     bne @is_on_crate_loop
 
     ; is not on crate
-    lda #ff
-    bra @exit_is_on_crate
-
-is_on_crate:
-    txa
-
+    ldx #ff
 exit_is_on_crate:
+    pld
+    pla
+    pla
+
+    txa ; return index of found crate
+
     rts
 
 HasWon:

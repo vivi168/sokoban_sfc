@@ -14,7 +14,7 @@ FastReset:
     txs                 ; set stack pointer to 1fff
 
     lda #01
-    sta @MEMSEL
+    sta MEMSEL
 
     ; Forced Blank
     lda #80

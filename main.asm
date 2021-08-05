@@ -32,7 +32,6 @@ MainLoop:
 ; direction change in A
 MovePlayer:
     php
-    brk 00
 
     sep #30
     pha ; save direction change
@@ -143,6 +142,52 @@ HasWon:
     ; here loop through crate position,
     ; increment counter if crate is on target
     ; at the end of the loop, if counter == crate_count, WON
+    php
+
+    sep #30
+
+    ; local stack frame
+    ; 01 -> crate on target count
+    tsc
+    dec
+    tcs
+    tcd
+
+    stz 01
+
+    ldx #00
+
+has_won_loop:
+    lda @crate_positions,x
+    phx
+
+    tax
+    lda @level_tiles,x
+    cmp #TARGET_T
+    bne @continue_has_won_loop
+
+    inc 01
+
+continue_has_won_loop:
+    plx
+    inx
+    cpx @crate_count
+    bne @has_won_loop
+
+    lda @crate_count
+    cmp 01
+    bne @exit_has_won
+
+    jmp @ResetVector
+
+exit_has_won:
+    ; restore stack frame
+    tsc
+    inc
+    tcs
+
+    plp
+
     rts
 
 .include info.asm

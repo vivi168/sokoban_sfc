@@ -134,7 +134,6 @@ exit_move_crate:
 ; input : X -> index to ignore
 ; output : A -> crate index if is on crate, 0xff if is not on crate
 IsOnCrate:
-brk 00
     phx ; save index to ignore
     pha ; save player position
     phd

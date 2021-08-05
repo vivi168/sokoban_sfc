@@ -24,6 +24,9 @@ MainLoop:
     jsr @UpdatePlayerOamBuffer
     jsr @UpdateCratesOamBuffer
 
+
+    jsr @HasWon
+
     jmp @MainLoop
 
 ; direction change in A
@@ -57,12 +60,12 @@ check_crate_collide:
     beq @exit_move_player
 
     ; try to move crate here
-    tax
-    lda 2,s
+    tax ; crate index
+    lda 2,s ; change of direction
     jsr @MoveCrate
     ; here, check if MoveCrate result is 0 -> exit move player
     ; if result is 1 -> restore crate position AND player position
-    bra @exit_move_player
+    beq @exit_move_player
 
 restore_player_position:
     lda 1,s
@@ -78,9 +81,38 @@ exit_move_player:
 ; input : A -> change of direction
 ; output : A -> 0x00 = moved, 0x01 = not moved
 MoveCrate:
+    phx ; save crate index
+    pha ; save change of direction
+
+    lda @crate_positions,x
+    pha ; save old position
+
     clc
-    adc @crate_positions,x
+    adc 2,s
+    sta @crate_positions,x ; crate position += change of direction
+
+    tax
+    lda @level_tiles,x
+    cmp #WALL_T
+    beq @restore_crate_position
+
+    ldx #00 ; 00 -> moved
+    bra @exit_move_crate
+
+restore_crate_position:
+    lda 3,s
+    tax
+    lda 1,s
     sta @crate_positions,x
+
+    ldx #01 ; 01 -> not moved
+
+exit_move_crate:
+    pla
+    pla
+    pla
+
+    txa
 
     rts
 
@@ -108,6 +140,9 @@ exit_is_on_crate:
     rts
 
 HasWon:
+    ; here loop through crate position,
+    ; increment counter if crate is on target
+    ; at the end of the loop, if counter == crate_count, WON
     rts
 
 .include info.asm

@@ -303,7 +303,6 @@ SetCurrentLevel:
     php
     phb
 
-
     lda !level_bank
     pha
     plb
@@ -338,10 +337,14 @@ InitLevel:
 
     rts
 
+; here check not going over level_count
 NextLevel:
     sep #20
     rep #10
     inc @level_no
+
+    ldx #STACK_TOP
+    txs
 
     jsr @SetCurrentLevel
     jsr @InitLevel
@@ -361,6 +364,10 @@ PrevLevel:
 RestartLevel:
     sep #20
     rep #10
+
+    ldx #STACK_TOP
+    txs
+
     jsr @InitLevel
 
     jmp @MainLoop

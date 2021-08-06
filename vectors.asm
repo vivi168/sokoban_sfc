@@ -1,4 +1,4 @@
-.define STACK_SIZE 1fff
+.define STACK_TOP 1fff
 
 ResetVector:
     sei                 ; disable interrupts
@@ -10,7 +10,7 @@ FastReset:
     sep #20             ; M8
     rep #10             ; X16
 
-    ldx #STACK_SIZE
+    ldx #STACK_TOP
     txs                 ; set stack pointer to 1fff
 
     lda #01

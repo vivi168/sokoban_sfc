@@ -85,14 +85,14 @@ FastReset:
     jsr @VramDmaTransfer
     txs             ; restore stack pointer
 
-    ; Copy spritesheet-pal.bin to CGRAM
+    ; Copy sprites-pal.bin + sprites-b-pal to CGRAM
     tsx                 ; save stack pointer
     lda #80             ; cgram dest addr (@CGRAM[0100] really, 2 bytes step)
     pha
     pea @spritesheet_pal
     lda #^spritesheet_pal
     pha
-    lda #PALETTE_SIZE   ; bytes_to_trasnfer
+    lda #PALETTES_SIZE   ; bytes_to_trasnfer
     pha
     jsr @CgramDmaTransfer
     txs                 ; restore stack pointer

@@ -3,8 +3,10 @@
 
 tileset:                  .incbin assets/tileset.bin
 tileset_palette:          .incbin assets/tileset-pal.bin
+
 spritesheet:              .incbin assets/sprites.bin
 spritesheet_pal:          .incbin assets/sprites-pal.bin
+                          .incbin assets/sprites-b-pal.bin
 level1:                   .incbin assets/level1.txt
 level2:                   .incbin assets/level3.txt
 level3:                   .incbin assets/level4.txt
@@ -20,4 +22,4 @@ level4_lu: .db @level4
 .define TILEMAP_BUFFER_SIZE 0800
 .define TILESET_SIZE 00c0
 .define SPRTSHT_SIZE 0400
-.define PALETTE_SIZE 20
+.define PALETTES_SIZE 40

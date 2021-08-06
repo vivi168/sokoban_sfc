@@ -45,8 +45,8 @@ HandleInput:
     bit #JOY_RIGHT
     bne @move_right
 
-    bit #JOY_START_SELECT
-    bne @restart_level
+    cmp #JOY_START_SELECT
+    beq @restart_level
 
     bra @exit_handle_input
 

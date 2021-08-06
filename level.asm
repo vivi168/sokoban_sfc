@@ -10,6 +10,8 @@
 ; python script to convert txt level to bin
 .define GROUND_CHAR   20 ; \s
 .define TARGET_CHAR   2e ; .
+.define TARGET_PCHAR  2b ; + (player starts on a target)
+.define TARGET_CCHAR  2a ; * (crate starts on a target)
 .define WALL_CHAR     23 ; #
 .define CRATE_CHAR    24 ; $
 .define PLAYER_CHAR   40 ; @
@@ -79,6 +81,25 @@ read_lv_loop:
     sta 01
 
 ;-----
+
+    cmp #TARGET_CCHAR
+    bne @is_target_c
+
+    ldx 05
+    lda #TARGET_T
+    sta @level_tiles,x
+    bra @set_crate_position
+
+is_target_c:
+    cmp #TARGET_PCHAR
+    bne @is_target
+
+    ldx 05
+    lda #TARGET_T
+    sta @level_tiles,x
+    bra @set_player_position
+
+is_target:
     cmp #TARGET_CHAR
     bne @is_wall
 
@@ -100,6 +121,7 @@ is_crate:
     cmp #CRATE_CHAR
     bne @is_player
 
+set_crate_position:
     ldx @crate_count
     lda 05
     sta @crate_positions,x
@@ -110,6 +132,7 @@ is_player:
     cmp #PLAYER_CHAR
     bne @is_newline
 
+set_player_position:
     lda 05
     sta @player_position
     bra @unknown_tile

@@ -2,7 +2,9 @@
 .base 8000
 
 tileset:                  .incbin assets/tileset.bin
+font8x8:                  .incbin assets/8x8font.bin
 tileset_palette:          .incbin assets/tileset-pal.bin
+font8x8_palette:          .incbin assets/8x8font-pal.bin
 
 spritesheet:              .incbin assets/sprites.bin
 spritesheet_pal:          .incbin assets/sprites-pal.bin
@@ -46,5 +48,7 @@ level_lut:
 
 .define TILEMAP_BUFFER_SIZE 0800
 .define TILESET_SIZE 00c0
+.define TILE_PAL_SIZE 28
+.define FONT_SIZE 0600
 .define SPRTSHT_SIZE 0400
 .define PALETTES_SIZE 40

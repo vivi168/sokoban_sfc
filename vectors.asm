@@ -38,6 +38,12 @@ FastReset:
     lda #00             ; BG1 tiles @ VRAM[0000]
     sta BG12NBA
 
+    lda #30
+    sta BG3SC
+    lda #10
+    sta BG34NBA
+
+
     lda #11             ; enable BG1 + sprites
     sta TM
 
@@ -62,15 +68,24 @@ FastReset:
     jsr @VramDmaTransfer
     txs                 ; restore stack pointer
 
-    ; Copy tileset-pal.bin to CGRAM
+    ; Copy tileset.bin to VRAM
+    tsx                 ; save stack pointer
+    pea 1000            ; vram dest addr (@2000 really, word steps)
+    pea @font8x8
+    lda #^font8x8
+    pha
+    pea FONT_SIZE    ; nb of bytes to transfer
+    jsr @VramDmaTransfer
+    txs
+
+    ; Copy tileset-pal.bin + font8x8-pal.bin to CGRAM
     tsx                 ; save stack pointer
     lda #00             ; cgram dest addr (@0000 really, 2 bytes step)
     pha
     pea @tileset_palette
     lda #^tileset_palette
     pha
-    ; TODO allow for more than $ff bytes
-    lda #ff   ; bytes_to_trasnfer
+    lda #TILE_PAL_SIZE   ; bytes_to_trasnfer
     pha
     jsr @CgramDmaTransfer
     txs                 ; restore stack pointer

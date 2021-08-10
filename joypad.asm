@@ -2,7 +2,7 @@
 .define JOY_DOWN    0400
 .define JOY_LEFT    0200
 .define JOY_RIGHT   0100
-.define JOY_START_SELECT 3000
+.define JOY_SELECT  2000
 
 ReadJoyPad1:
     php
@@ -45,8 +45,8 @@ HandleInput:
     bit #JOY_RIGHT
     bne @move_right
 
-    cmp #JOY_START_SELECT
-    beq @restart_level
+    bit #JOY_SELECT
+    bne @restart_level
 
     bra @exit_handle_input
 

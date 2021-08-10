@@ -324,23 +324,19 @@ wall_lu:   .db @process_wall
 
 SetCurrentLevel:
     php
-    phb
 
     lda !level_bank
-    pha
-    plb
-
     sta @current_level+2
 
-    rep #20
     lda @level_no
+    rep #20
     and #00ff
     asl
     tax
-    lda @level_lut+1,x
+
+    lda !level_lut,x
     sta @current_level
 
-    plb
     plp
     rts
 

@@ -33,8 +33,9 @@ level10:                  .incbin levels/level10.txt
 
 default_level_count:      .db 0a
 
-level_lut:
+level_bank:
            .db ^level1
+level_lut:
            .db @level1
            .db @level2
            .db @level3

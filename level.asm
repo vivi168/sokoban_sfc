@@ -70,12 +70,11 @@ ReadLevel:
     lda @current_level+2
     sta 04
 
+    rep #20
     stz 05
-    stz 06
     stz 07
-    stz 08
 
-    sep #10 ; X 8
+    sep #30 ; X 8
     stz @crate_count
 
     ldy #00

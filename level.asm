@@ -57,9 +57,11 @@ ReadLevel:
     ; 04 -> current_level bank
     ; 05 -> index in level_tile array
     ; 06 -> length of current line
+    ; 07 -> current level width
+    ; 08 -> current level height
     tsc
     sec
-    sbc #06
+    sbc #08
     tcs
     tcd
 
@@ -70,6 +72,8 @@ ReadLevel:
 
     stz 05
     stz 06
+    stz 07
+    stz 08
 
     sep #10 ; X 8
     stz @crate_count
@@ -141,6 +145,13 @@ is_newline:
     cmp #NEWLINE_CHAR
     bne @unknown_tile
 
+    inc 08
+    lda 06
+    cmp 07
+    bcc @continue_new_line
+    sta 07
+
+continue_new_line:
     ; i += LEVEL_W - l;
     lda #LEVEL_W
     sec
@@ -162,10 +173,30 @@ read_next_tile:
     lda 01  ; \0 -> end of file
     bne @read_lv_loop
 
+    lda #LEVEL_W
+    sec
+    sbc 07
+    lsr
+    asl
+    asl
+    asl
+    asl
+    sta @horizontal_offset
+
+    lda #LEVEL_H
+    sec
+    sbc 08
+    lsr
+    asl
+    asl
+    asl
+    asl
+    sta @vertical_offset
+
     ; restore stack frame
     tsc
     clc
-    adc #06
+    adc #08
     tcs
 
     pld

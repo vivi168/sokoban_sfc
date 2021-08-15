@@ -94,6 +94,7 @@ ClearRegisters:
     stz @frame_counter
     stz @level_no
 
-
+    stz @horizontal_offset
+    stz @vertical_offset
 
     rts

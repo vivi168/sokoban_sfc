@@ -50,6 +50,8 @@ InitPlayerOamBuffer:
     asl
     asl
     asl
+    clc
+    adc @horizontal_offset
     sta !oam_buffer
 
     ;y
@@ -62,6 +64,8 @@ InitPlayerOamBuffer:
     asl
     asl
     asl
+    clc
+    adc @vertical_offset
     sta !oam_buffer+1
 
     lda #00             ; nnnnnnnn
@@ -116,6 +120,8 @@ init_crates:
     asl
     asl
     asl
+    clc
+    adc @horizontal_offset
     sta !oam_buffer,x
 
     ;y
@@ -128,6 +134,8 @@ init_crates:
     asl
     asl
     asl
+    clc
+    adc @vertical_offset
     sta !oam_buffer+1,x
 
     lda #02             ; nnnnnnnn
@@ -203,6 +211,8 @@ UpdatePlayerOamBuffer:
     asl
     asl
     asl
+    clc
+    adc @horizontal_offset
     sta !oam_buffer
 
     ;y
@@ -215,6 +225,8 @@ UpdatePlayerOamBuffer:
     asl
     asl
     asl
+    clc
+    adc @vertical_offset
     sta !oam_buffer+1
 
     rts
@@ -239,14 +251,18 @@ update_crates_loop:
     asl
     tax
 
+    ; x coords
     lda 1,s
     and #0f
     asl
     asl
     asl
     asl
+    clc
+    adc @horizontal_offset
     sta !oam_buffer,x
 
+    ; y coords
     lda 1,s
     lsr
     lsr
@@ -256,6 +272,8 @@ update_crates_loop:
     asl
     asl
     asl
+    clc
+    adc @vertical_offset
     sta !oam_buffer+1,x
 
     lda #30             ; vhppcccn

@@ -25,7 +25,7 @@ FastReset:
     lda #01
     sta BGMODE
 
-    lda #00    ; first write = lower byte
+    lda #00             ; first write = lower byte
     sta BG1HOFS         ; horizontal scroll ;
     sta BG1HOFS         ; second write = upper 2 bits
     lda #ff             ; vertical scroll. caution, offset by -1
@@ -139,6 +139,19 @@ NmiVector:
     lda RDNMI
 
     inc @frame_counter
+
+    lda @horizontal_offset
+    eor #ff
+    inc                         ; two's complement trick
+    sta BG1HOFS
+    lda #00
+    sta BG1HOFS
+
+    lda @vertical_offset
+    eor #ff
+    sta BG1VOFS
+    lda #00
+    sta BG1VOFS
 
     jsr @TransferBG1Buffer
     jsr @TransferOamBuffer

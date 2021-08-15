@@ -22,6 +22,9 @@ step_count:               .rb 2
 
 frame_counter:            .rb 1
 
+horizontal_offset:        .rb 1
+vertical_offset:          .rb 1
+
 .org 7e2000
 
 tilemap_buffer:           .rb 800

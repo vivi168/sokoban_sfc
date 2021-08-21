@@ -1,2 +1,4 @@
 *.smc
 labels.txt
+labels.msl
+.byebug_history

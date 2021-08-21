@@ -4,8 +4,8 @@
 .65816
 
 .include define.inc
-.include macros.inc
 .include registers.inc
+.include macros.inc
 .include var.asm
 .include assets.asm
 

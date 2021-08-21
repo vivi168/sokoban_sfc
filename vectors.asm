@@ -56,59 +56,12 @@ FastReset:
     jsr @TransferBG1Buffer
     jsr @TransferOamBuffer
 
-    ; Copy tileset.bin to VRAM
-    tsx                 ; save stack pointer
-    pea 0000            ; vram dest addr (@0000 really, word steps)
-    pea @tileset
-    lda #^tileset
-    pha
-    pea TILESET_SIZE    ; nb of bytes to transfer
-    jsr @VramDmaTransfer
-    txs                 ; restore stack pointer
+    .call VRAM_DMA_TRANSFER 0000, tileset, TILESET_SIZE
+    .call VRAM_DMA_TRANSFER 1000, font8x8, FONT_SIZE
+    .call VRAM_DMA_TRANSFER 4000, spritesheet, SPRTSHT_SIZE
 
-    ; Copy tileset.bin to VRAM
-    tsx                 ; save stack pointer
-    pea 1000            ; vram dest addr (@2000 really, word steps)
-    pea @font8x8
-    lda #^font8x8
-    pha
-    pea FONT_SIZE    ; nb of bytes to transfer
-    jsr @VramDmaTransfer
-    txs
-
-    ; Copy tileset-pal.bin + font8x8-pal.bin to CGRAM
-    tsx                 ; save stack pointer
-    lda #00             ; cgram dest addr (@0000 really, 2 bytes step)
-    pha
-    pea @tileset_palette
-    lda #^tileset_palette
-    pha
-    lda #TILE_PAL_SIZE   ; bytes_to_trasnfer
-    pha
-    jsr @CgramDmaTransfer
-    txs                 ; restore stack pointer
-
-    ; Copy spritesheet.bin to VRAM
-    tsx             ; save stack pointer
-    pea 4000        ; vram_dest_addr
-    pea @spritesheet
-    lda #^spritesheet
-    pha
-    pea SPRTSHT_SIZE; bytes_to_trasnfer
-    jsr @VramDmaTransfer
-    txs             ; restore stack pointer
-
-    ; Copy sprites-pal.bin + sprites-b-pal to CGRAM
-    tsx                 ; save stack pointer
-    lda #80             ; cgram dest addr (@CGRAM[0100] really, 2 bytes step)
-    pha
-    pea @spritesheet_pal
-    lda #^spritesheet_pal
-    pha
-    lda #PALETTES_SIZE   ; bytes_to_trasnfer
-    pha
-    jsr @CgramDmaTransfer
-    txs                 ; restore stack pointer
+    .call CGRAM_DMA_TRANSFER 00, tileset_palette, TILE_PAL_SIZE
+    .call CGRAM_DMA_TRANSFER 80, spritesheet_pal, PALETTES_SIZE
 
     ; ----
 

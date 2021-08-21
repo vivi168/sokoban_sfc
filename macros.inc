@@ -46,3 +46,47 @@
     lsr
     lsr
 .endm
+
+.macro VRAM_DMA_TRANSFER dest_addr, src_addr, nb_bytes
+    ldx #%dest_addr
+    stx VMADDL
+
+    lda #18             ; VMDATAL 21*18*
+    sta BBAD0
+
+    ldx #@%src_addr
+    stx A1T0L
+    lda #^%src_addr
+    sta A1T0B
+
+    ldx #%nb_bytes
+    stx DAS0L
+
+    lda #01
+    sta DMAP0
+
+    lda #01
+    sta MDMAEN
+.endm
+
+.macro CGRAM_DMA_TRANSFER dest_addr, src_addr, nb_bytes
+    lda #%dest_addr
+    sta CGADD
+
+    lda #22
+    sta BBAD0
+
+    ldx #@%src_addr
+    stx A1T0L
+    lda #^%src_addr
+    sta A1T0B
+
+    lda #%nb_bytes
+    sta DAS0L
+
+    lda #00
+    sta DMAP0
+
+    lda #01
+    sta MDMAEN
+.endm

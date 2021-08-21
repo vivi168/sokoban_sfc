@@ -3,6 +3,7 @@
 ;**************************************
 .65816
 
+.include macros.inc
 .include registers.inc
 .include var.asm
 .include assets.asm
@@ -33,7 +34,7 @@ MainLoop:
 MovePlayer:
     php
 
-    sep #30
+    .call MX8
     pha ; save direction change
     tax
     lda @player_position
@@ -73,9 +74,9 @@ restore_player_position:
     bra @exit_move_player
 
 increase_step_count:
-    rep #20
+    .call M16
     inc @step_count
-    sep #20
+    .call M8
 
 exit_move_player:
     pla
@@ -177,7 +178,7 @@ HasWon:
     ; at the end of the loop, if counter == crate_count, WON
     php
 
-    sep #30
+    .call MX8
 
     ; local stack frame
     ; 01 -> crate on target count

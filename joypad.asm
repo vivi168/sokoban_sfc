@@ -11,7 +11,7 @@ read_joy1_data:
     and #01
     bne @read_joy1_data ; read done when 0
 
-    rep #30             ; m16, x16
+    .call MX16
 
     ldx @joy1_raw       ; read previous frame raw input
     lda JOY1L           ; read current frame raw input (JOY1L)
@@ -30,7 +30,7 @@ read_joy1_data:
 HandleInput:
     php
 
-    rep #20
+    .call M16
     lda @joy1_press
 
     bit #JOY_UP
@@ -54,21 +54,21 @@ restart_level:
     jmp @RestartLevel
 
 move_up:
-    sep #20
+    .call M8
     lda #LEVEL_W
     eor #ff
     inc             ; a = -level_w
     bra @move_player
 move_down:
-    sep #20
+    .call M8
     lda #LEVEL_W
     bra @move_player
 move_left:
-    sep #20
+    .call M8
     lda #ff
     bra @move_player
 move_right:
-    sep #20
+    .call M8
     lda #01
 
 move_player:

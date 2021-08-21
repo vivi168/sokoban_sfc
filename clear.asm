@@ -11,7 +11,7 @@ ClearRegisters:
     stz 210b
     stz 210c
 
-    rep #20
+    .call M16
 
     stz 210d
     stz 210d
@@ -30,7 +30,7 @@ ClearRegisters:
     stz 2114
     stz 2114
 
-    sep #20
+    .call M8
 
     lda #80
     sta 2115
@@ -38,7 +38,7 @@ ClearRegisters:
     stz 2117
     stz 211a
 
-    rep #20
+    .call M16
 
     lda #0001
     sta 211b
@@ -48,7 +48,7 @@ ClearRegisters:
     stz 211f
     stz 2120
 
-    sep #20
+    .call M8
 
     stz 2121
     stz 2123

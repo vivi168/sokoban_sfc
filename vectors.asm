@@ -7,8 +7,8 @@ ResetVector:
     cld
     jmp !FastReset
 FastReset:
-    sep #20             ; M8
-    rep #10             ; X16
+    .call M8
+    .call X16
 
     ldx #STACK_TOP
     txs                 ; set stack pointer to 1fff
@@ -128,13 +128,13 @@ BreakVector:
 
 NmiVector:
     php
-    rep #30
+    .call MX16
     pha
     phx
     phy
 
-    sep #20
-    rep #10
+    .call M8
+    .call X16
 
     lda RDNMI
 
@@ -158,7 +158,7 @@ NmiVector:
 
     jsr @ReadJoyPad1
 
-    rep #30
+    .call MX16
     ply
     plx
     pla

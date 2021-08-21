@@ -7,8 +7,8 @@
 ;**************************************
 InitOamBuffer:
     php
-    sep #20
-    rep #10
+    .call M8
+    .call X16
 
     ldx #0000
 set_x_lsb:
@@ -46,24 +46,15 @@ InitPlayerOamBuffer:
     ;x
     lda @player_position
     and #0f
-    asl
-    asl
-    asl
-    asl
+    .call ASL4
     clc
     adc @horizontal_offset
     sta !oam_buffer
 
     ;y
     lda @player_position
-    lsr
-    lsr
-    lsr
-    lsr
-    asl
-    asl
-    asl
-    asl
+    .call LSR4
+    .call ASL4
     clc
     adc @vertical_offset
     sta !oam_buffer+1
@@ -87,7 +78,7 @@ InitPlayerOamBuffer:
 InitCratesOamBuffer:
     php
 
-    sep #30
+    .call MX8
 
     ; create stack frame
     ; 01 -> crate_positions[i]
@@ -116,24 +107,15 @@ init_crates:
     ;x
     lda 01
     and #0f
-    asl
-    asl
-    asl
-    asl
+    .call ASL4
     clc
     adc @horizontal_offset
     sta !oam_buffer,x
 
     ;y
     lda 01
-    lsr
-    lsr
-    lsr
-    lsr
-    asl
-    asl
-    asl
-    asl
+    .call LSR4
+    .call ASL4
     clc
     adc @vertical_offset
     sta !oam_buffer+1,x
@@ -207,24 +189,15 @@ UpdatePlayerOamBuffer:
     ;x
     lda @player_position
     and #0f
-    asl
-    asl
-    asl
-    asl
+    .call ASL4
     clc
     adc @horizontal_offset
     sta !oam_buffer
 
     ;y
     lda @player_position
-    lsr
-    lsr
-    lsr
-    lsr
-    asl
-    asl
-    asl
-    asl
+    .call LSR4
+    .call ASL4
     clc
     adc @vertical_offset
     sta !oam_buffer+1
@@ -237,7 +210,7 @@ UpdatePlayerOamBuffer:
 UpdateCratesOamBuffer:
     php
 
-    sep #30
+    .call MX8
 
     ldy #00
 
@@ -254,24 +227,15 @@ update_crates_loop:
     ; x coords
     lda 1,s
     and #0f
-    asl
-    asl
-    asl
-    asl
+    .call ASL4
     clc
     adc @horizontal_offset
     sta !oam_buffer,x
 
     ; y coords
     lda 1,s
-    lsr
-    lsr
-    lsr
-    lsr
-    asl
-    asl
-    asl
-    asl
+    .call LSR4
+    .call ASL4
     clc
     adc @vertical_offset
     sta !oam_buffer+1,x

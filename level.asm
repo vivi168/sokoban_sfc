@@ -27,7 +27,7 @@
 ResetLevel:
     php
 
-    sep #30
+    .call MX8
     lda #GROUND_T
     ldx #00
 
@@ -48,7 +48,7 @@ reset_level_loop:
 ReadLevel:
     php
     phd
-    sep #20 ; A 8
+    .call M8
     ; local stack frame
     ; reserve 6 bytes
     ; 01 -> current tile char
@@ -70,11 +70,11 @@ ReadLevel:
     lda @current_level+2
     sta 04
 
-    rep #20
+    .call M16
     stz 05
     stz 07
 
-    sep #30 ; X 8
+    .call MX8
     stz @crate_count
 
     ldy #00
@@ -176,20 +176,14 @@ read_next_tile:
     sec
     sbc 07
     lsr
-    asl
-    asl
-    asl
-    asl
+    .call ASL4
     sta @horizontal_offset
 
     lda #LEVEL_H
     sec
     sbc 08
     lsr
-    asl
-    asl
-    asl
-    asl
+    .call ASL4
     sta @vertical_offset
 
     ; restore stack frame
@@ -209,7 +203,7 @@ ResetTilemapBuffer:
     php
     ; @tilemap_buffer
 
-    rep #30 ; A X 16
+    .call MX16
 
     ldx #0000
 clear_buffer_loop:
@@ -231,7 +225,7 @@ InitTilemapBuffer:
     php
     phd
 
-    sep #30
+    .call MX8
     ; reserve bytes on stack
     ; 01/02 first tile
     ; 03/04 second tile
@@ -247,20 +241,13 @@ InitTilemapBuffer:
     ldy #00 ; X 8
 set_tiles_loop:
     ; compute coordinates here
-    rep #30
+    .call MX16
 
     tya
     ; y = i // 16
-    lsr
-    lsr
-    lsr
-    lsr
+    .call LSR4
     ; y *= 32
-    asl
-    asl
-    asl
-    asl
-    asl
+    .call ASL5
 
     sta 01
     tya
@@ -286,7 +273,7 @@ set_tiles_loop:
     adc #0002
     sta 07      ; fourth = third + 2
 
-    sep #30
+    .call MX8
     lda @level_tiles,y
     asl
     tax
@@ -294,7 +281,7 @@ set_tiles_loop:
 
 ; -----
 continue_set_tile_loop:
-    sep #30
+    .call MX8
     iny
     cpy #LEVEL_SIZE
     bne @set_tiles_loop
@@ -312,7 +299,7 @@ continue_set_tile_loop:
 process_ground:
     jmp @continue_set_tile_loop
 process_target:
-    rep #30
+    .call MX16
 
     lda #0001
     ldx 01
@@ -332,7 +319,7 @@ process_target:
 
     jmp @continue_set_tile_loop
 process_wall:
-    rep #30
+    .call MX16
 
     lda #0005
 
@@ -359,7 +346,7 @@ SetCurrentLevel:
     sta @current_level+2
 
     lda @level_no
-    rep #20
+    .call M16
     and #00ff
     asl
     tax
@@ -371,9 +358,9 @@ SetCurrentLevel:
     rts
 
 InitLevel:
-    rep #20
+    .call M16
     stz @step_count
-    sep #20
+    .call M8
 
     jsr @ResetLevel
     jsr @ReadLevel
@@ -388,8 +375,8 @@ InitLevel:
 
 ; here check not going over level_count
 NextLevel:
-    sep #20
-    rep #10
+    .call M8
+    .call X16
     inc @level_no
 
     ldx #STACK_TOP
@@ -401,8 +388,8 @@ NextLevel:
     jmp @MainLoop
 
 PrevLevel:
-    sep #20
-    rep #10
+    .call M8
+    .call X16
     dec @level_no
 
     jsr @SetCurrentLevel
@@ -411,8 +398,8 @@ PrevLevel:
     jmp @MainLoop
 
 RestartLevel:
-    sep #20
-    rep #10
+    .call M8
+    .call X16
 
     ldx #STACK_TOP
     txs

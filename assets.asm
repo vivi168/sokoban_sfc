@@ -46,10 +46,3 @@ level_lut:
            .db @level8
            .db @level9
            .db @level10
-
-.define TILEMAP_BUFFER_SIZE 0800
-.define TILESET_SIZE 00c0
-.define TILE_PAL_SIZE 28
-.define FONT_SIZE 0600
-.define SPRTSHT_SIZE 0400
-.define PALETTES_SIZE 40

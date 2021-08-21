@@ -1,8 +1,3 @@
-.define LEVEL_W        10
-.define LEVEL_H        0e
-.define LEVEL_SIZE     e0
-.define MAX_CRATES     1f
-
 .org 7e0000
 
 joy1_raw:                 .rb 2

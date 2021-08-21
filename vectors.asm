@@ -1,5 +1,3 @@
-.define STACK_TOP 1fff
-
 ResetVector:
     sei                 ; disable interrupts
     clc

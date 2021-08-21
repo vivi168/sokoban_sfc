@@ -1,28 +1,6 @@
 ; tilemap format
 ; tile number lowest 8 bits
 ; vert flip | hori flip | prio bit | pal no H | pal no M | pal no L | tile number 10th bit | tile number 9th bit
-; 0 0 0 0 0 0 0 0
-; 0 0 0 000 0 0
-; GROUND = 00, TARGET = 01 02 03 04, WALL = 05
-
-; tile definition in level.txt
-; should replace char by 0, 1, 2, 3... to be able to have a look up table and spare cycles
-; python script to convert txt level to bin
-.define GROUND_CHAR   20 ; \s
-.define TARGET_CHAR   2e ; .
-.define TARGET_PCHAR  2b ; + (player starts on a target)
-.define TARGET_CCHAR  2a ; * (crate starts on a target)
-.define WALL_CHAR     23 ; #
-.define CRATE_CHAR    24 ; $
-.define PLAYER_CHAR   40 ; @
-.define NEWLINE_CHAR  0a ; \n
-
-; tiles enum
-.define GROUND_T 00
-.define TARGET_T 01
-.define WALL_T   02
-
-.define TILEMAP_SIZE 400
 
 ResetLevel:
     php

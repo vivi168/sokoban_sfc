@@ -1,9 +1,3 @@
-.define JOY_UP      0800
-.define JOY_DOWN    0400
-.define JOY_LEFT    0200
-.define JOY_RIGHT   0100
-.define JOY_SELECT  2000
-
 ReadJoyPad1:
     php
 read_joy1_data:

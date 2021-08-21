@@ -3,6 +3,7 @@
 ;**************************************
 .65816
 
+.include define.inc
 .include macros.inc
 .include registers.inc
 .include var.asm

@@ -1,5 +1,3 @@
-.define OAML_SIZE   0200
-.define OAM_SIZE    0220
 ;**************************************
 ;
 ; clear oam buffer with off screen sprites

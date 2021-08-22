@@ -24,5 +24,5 @@ TransferOamBuffer:
     rts
 
 TransferBG13Buffer:
-    .call VRAM_DMA_TRANSFER 2000, tilemap_buffer, BG_BUFFERS_SIZE
+    .call VRAM_DMA_TRANSFER 2000, bg_buffers, BG_BUFFERS_SIZE
     rts

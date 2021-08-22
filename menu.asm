@@ -75,8 +75,6 @@ EncodeStepCount:
 
     rts
 
-step_count_str: .db 73, 74, 65, 70, 20, 63, 6f, 75, 6e, 74, 3a, 20, 30, 30, 30, 30, 00
-
 ClearTextBuffer:
     php
     ; @tilemap_buffer
@@ -85,7 +83,7 @@ ClearTextBuffer:
 
     ldx #0000
 clear_text_buffer_loop:
-    lda #0000
+    lda #3000
     sta !text_buffer,x
     inx
     inx
@@ -95,5 +93,63 @@ clear_text_buffer_loop:
     plp
     rts
 
-PutString:
+step_count_str: .db 53, 54, 45, 50, 20, 43, 4f, 55, 4e, 54, 3a, 20, 00
+PutStepCount:
+    ldx #0000
+
+put_string_loop:
+    lda @step_count_str,x
+    beq @put_step_count
+
+    phx
+    pha
+    .call M16
+    txa
+    asl
+    tax
+    .call M8
+    pla
+    sec
+    sbc #20
+    sta !text_buffer,x
+    plx
+
+    inx
+    bra @put_string_loop
+
+put_step_count:
+    .call M16
+    txa
+    asl
+    tax
+    .call M8
+    lda @step_count_bcd
+    clc
+    adc #10
+    sta !text_buffer,x
+    inx
+    inx
+    lda @step_count_bcd+1
+    clc
+    adc #10
+    sta !text_buffer,x
+    inx
+    inx
+    lda @step_count_bcd+2
+    clc
+    adc #10
+    sta !text_buffer,x
+    inx
+    inx
+    lda @step_count_bcd+3
+    clc
+    adc #10
+    sta !text_buffer,x
+    inx
+    inx
+    lda @step_count_bcd+4
+    clc
+    adc #10
+    sta !text_buffer,x
+
     rts

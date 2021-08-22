@@ -24,6 +24,7 @@ MainLoop:
     wai
 
     jsr @EncodeStepCount
+    jsr @PutStepCount
 
     jsr @HandleInput
     jsr @UpdatePlayerOamBuffer

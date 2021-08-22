@@ -43,7 +43,7 @@ FastReset:
     lda #24
     sta BG3SC           ; BG3 MAP @ VRAM[4800]
 
-    lda #11             ; enable BG1 + sprites
+    lda #15             ; enable BG13 + sprites
     sta TM
 
     ; --- OBJ settings

@@ -57,11 +57,11 @@ FastReset:
     jsr @TransferOamBuffer
 
     .call VRAM_DMA_TRANSFER 0000, tileset, TILESET_SIZE
-    .call VRAM_DMA_TRANSFER 1000, font8x8, FONT_SIZE
-    .call VRAM_DMA_TRANSFER 4000, spritesheet, SPRTSHT_SIZE
+    .call VRAM_DMA_TRANSFER 1000, font8x8, FONT_SIZE            ; VRAM[0x2000] (word step)
+    .call VRAM_DMA_TRANSFER 4000, spritesheet, SPRTSHT_SIZE     ; VRAM[0x8000] (word step)
 
     .call CGRAM_DMA_TRANSFER 00, tileset_palette, TILE_PAL_SIZE
-    .call CGRAM_DMA_TRANSFER 80, spritesheet_pal, PALETTES_SIZE
+    .call CGRAM_DMA_TRANSFER 80, spritesheet_pal, PALETTES_SIZE ; CGRAM[0x100] (word step)
 
     ; ----
 

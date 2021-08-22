@@ -26,6 +26,8 @@ hex_to_dec_out:           .rb 3
 
 .org 7e2000
 
+bg_buffers:
 tilemap_buffer:           .rb 800
+text_buffer:              .rb 800
 oam_buffer:               .rb 200         ; OAM buffer
 oam_buffer_hi:            .rb 20

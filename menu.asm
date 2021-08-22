@@ -74,3 +74,26 @@ EncodeStepCount:
     sta @step_count_bcd
 
     rts
+
+step_count_str: .db 73, 74, 65, 70, 20, 63, 6f, 75, 6e, 74, 3a, 20, 30, 30, 30, 30, 00
+
+ClearTextBuffer:
+    php
+    ; @tilemap_buffer
+
+    .call MX16
+
+    ldx #0000
+clear_text_buffer_loop:
+    lda #0000
+    sta !text_buffer,x
+    inx
+    inx
+    cpx #TILEMAP_BUFFER_SIZE
+    bne @clear_text_buffer_loop
+
+    plp
+    rts
+
+PutString:
+    rts

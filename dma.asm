@@ -23,7 +23,6 @@ TransferOamBuffer:
     sta MDMAEN
     rts
 
-TransferBG1Buffer:
-    .call VRAM_DMA_TRANSFER 2000, tilemap_buffer, TILEMAP_BUFFER_SIZE
-
+TransferBG13Buffer:
+    .call VRAM_DMA_TRANSFER 2000, tilemap_buffer, BG_BUFFERS_SIZE
     rts

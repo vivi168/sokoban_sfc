@@ -20,7 +20,7 @@ FastReset:
     jsr @ClearRegisters
 
     ; ---- BG settings
-    lda #01
+    lda #09             ; bg 3 high prio, mode 1
     sta BGMODE
 
     lda #00             ; first write = lower byte
@@ -31,16 +31,17 @@ FastReset:
     lda #00
     sta BG1VOFS
 
-    lda #20             ; BG1 MAP @ VRAM[4000]
-    sta BG1SC
-    lda #00             ; BG1 tiles @ VRAM[0000]
-    sta BG12NBA
+    lda #00
+    sta BG12NBA         ; BG1 tiles @ VRAM[0000]
 
-    lda #30
-    sta BG3SC
-    lda #10
-    sta BG34NBA
+    lda #01
+    sta BG34NBA         ; BG3 tiles @ VRAM[2000]
 
+    lda #20
+    sta BG1SC           ; BG1 MAP @ VRAM[4000]
+
+    lda #24
+    sta BG3SC           ; BG3 MAP @ VRAM[4800]
 
     lda #11             ; enable BG1 + sprites
     sta TM
@@ -53,7 +54,9 @@ FastReset:
     jsr @SetCurrentLevel
     jsr @InitLevel
 
-    jsr @TransferBG1Buffer
+    jsr @ClearTextBuffer
+
+    jsr @TransferBG13Buffer
     jsr @TransferOamBuffer
 
     .call VRAM_DMA_TRANSFER 0000, tileset, TILESET_SIZE
@@ -104,7 +107,7 @@ NmiVector:
     lda #00
     sta BG1VOFS
 
-    jsr @TransferBG1Buffer
+    jsr @TransferBG13Buffer
     jsr @TransferOamBuffer
 
     jsr @ReadJoyPad1

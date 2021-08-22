@@ -1,6 +1,7 @@
 .define STACK_TOP 1fff
 
 .define TILEMAP_BUFFER_SIZE 0800
+.define BG_BUFFERS_SIZE 1000
 .define TILESET_SIZE 00c0
 .define TILE_PAL_SIZE 28
 .define FONT_SIZE 0600

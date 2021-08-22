@@ -189,6 +189,7 @@ clear_buffer_loop:
     lda #0000
     sta !tilemap_buffer,x
     inx
+    inx
     cpx #TILEMAP_BUFFER_SIZE
     bne @clear_buffer_loop
 

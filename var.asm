@@ -14,11 +14,15 @@ crate_positions:          .rb MAX_CRATES
 crate_count:              .rb 1
 
 step_count:               .rb 2
+step_count_bcd:           .rb 5
 
 frame_counter:            .rb 1
 
 horizontal_offset:        .rb 1
 vertical_offset:          .rb 1
+
+hex_to_dec_in:            .rb 2
+hex_to_dec_out:           .rb 3
 
 .org 7e2000
 

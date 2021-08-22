@@ -358,6 +358,13 @@ NextLevel:
     .call X16
     inc @level_no
 
+    lda @level_count
+    cmp @level_no
+    bne @continue_next_level
+
+    stz @level_no
+
+continue_next_level:
     ldx #STACK_TOP
     txs
 

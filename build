@@ -1,2 +1,4 @@
 #!/bin/bash
+
+ruby levels/gen.rb > levels.asm
 ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f main.asm

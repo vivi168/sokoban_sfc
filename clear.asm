@@ -97,4 +97,7 @@ ClearRegisters:
     stz @horizontal_offset
     stz @vertical_offset
 
+    lda !default_level_count
+    sta @level_count
+
     rts

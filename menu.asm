@@ -4,13 +4,13 @@ hex_to_dec_lut:
     .db    00, 02, 56,    00, 05, 12,    00, 10, 24,    00, 20, 48
     .db    00, 40, 96,    00, 81, 92,    01, 63, 84,    03, 27, 68
 
-HexToDec:
+HexToDec:                   ; http://6502.org/source/integers/hex2dec.htm
     php
     .call MX8
     sed                     ; output gets added up in decimal.
 
     stz @hex_to_dec_out     ; inititalize output as 0.
-    stz @hex_to_dec_out+1   ; (nmos 6502 will need lda#0, sta...)
+    stz @hex_to_dec_out+1
     stz @hex_to_dec_out+2
 
     ldx #2d                 ; 0x2d is 45 decimal, or 3x15 bits.
@@ -22,7 +22,7 @@ hex_to_dec_loop:
     lda @hex_to_dec_out     ; but if the bit was 1,
     clc                     ; get ready to
     adc @hex_to_dec_lut+2,x ; add the bit value in the hex_to_dec_lut to the
-    sta @hex_to_dec_out     ; output sum in decimal--  first low byte,
+    sta @hex_to_dec_out     ; output sum in decimal
 
     lda @hex_to_dec_out+1   ; then middle byte,
     adc @hex_to_dec_lut+1,x

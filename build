@@ -1,4 +1,10 @@
 #!/bin/bash
 
+ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f music/main.asm -o music/music.bin
+
 ruby levels/gen.rb > levels.asm
-ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f main.asm
+
+spc_rom_size=$(echo "puts \"#{File.size('music/music.bin').to_s(16).rjust(4, '0')}\"" | ruby)
+sed -i "s/\(SPC_ROM_SIZE\).*$/\1 $spc_rom_size/" define.inc
+
+ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f main.asm -o sokoban.sfc

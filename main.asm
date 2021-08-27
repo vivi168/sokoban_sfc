@@ -19,6 +19,7 @@
 .include level.asm
 .include object.asm
 .include menu.asm
+.include music.asm
 
 MainLoop:
     wai

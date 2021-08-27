@@ -66,6 +66,8 @@ FastReset:
     .call CGRAM_DMA_TRANSFER 00, tileset_palette, TILE_PAL_SIZE
     .call CGRAM_DMA_TRANSFER 80, spritesheet_pal, PALETTES_SIZE ; CGRAM[0x100] (word step)
 
+    jsr @SpcUploadRoutine
+
     ; ----
 
     lda #0f             ; release forced blanking, set screen to full brightness

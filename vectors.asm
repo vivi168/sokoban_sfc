@@ -32,6 +32,14 @@ FastReset:
     sta BG1VOFS
 
     lda #00
+    sta BG3HOFS
+    sta BG3HOFS
+    lda #ff
+    sta BG3VOFS
+    lda #00
+    sta BG3VOFS
+
+    lda #00
     sta BG12NBA         ; BG1 tiles @ VRAM[0000]
 
     lda #01

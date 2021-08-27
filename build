@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f music/main.asm -o music/music.bin
+ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f music/main.asm -o music/music.spc
 
 ruby levels/gen.rb > levels.asm
 

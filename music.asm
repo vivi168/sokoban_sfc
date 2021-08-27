@@ -74,4 +74,4 @@ exit_spc_upl:
     rts
 
 DummySpcData:
-    .incbin music/music.bin
+    .incbin music/music.spc

@@ -4,7 +4,7 @@ ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f music/main.asm -o music/music.
 
 ruby levels/gen.rb > levels.asm
 
-spc_rom_size=$(echo "puts \"#{File.size('music/music.bin').to_s(16).rjust(4, '0')}\"" | ruby)
+spc_rom_size=$(echo "puts \"#{File.size('music/music.spc').to_s(16).rjust(4, '0')}\"" | ruby)
 sed -i "s/\(SPC_ROM_SIZE\).*$/\1 $spc_rom_size/" define.inc
 
 ruby -I../SNES_Utils/lib ../SNES_Utils/bin/vas -f main.asm -o sokoban.sfc

@@ -38,7 +38,7 @@ MenuLoop:
     wai
 
     lda @joy1_press+1
-    bit #JOY_START
+    bit #JOY_STARTH
     bne @init_game
 
     jmp @MenuLoop

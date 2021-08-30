@@ -17,7 +17,9 @@
 .define JOY_LEFT    0200
 .define JOY_RIGHT   0100
 .define JOY_SELECT  2000
-.define JOY_START   10
+.define JOY_START   1000
+.define JOY_STARTH    10
+
 
 ; GROUND = 00, TARGET = 01 02 03 04, WALL = 05
 ; tile definition in level.txt

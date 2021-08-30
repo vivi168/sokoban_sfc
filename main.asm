@@ -18,7 +18,7 @@
 .include joypad.asm
 .include level.asm
 .include object.asm
-.include menu.asm
+.include hud.asm
 .include music.asm
 
 MainLoop:

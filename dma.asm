@@ -1,11 +1,10 @@
 TransferOamBuffer:
-    ldx #0000
+    ldx #0000       ; dest address
     stx OAMADDL
 
     lda #04         ; OAMDATA 21*04*
     sta BBAD0
 
-    ; from 7e/2000
     ldx #@oam_buffer
     stx A1T0L
     lda #^oam_buffer

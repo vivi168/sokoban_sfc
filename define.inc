@@ -39,4 +39,4 @@
 .define LEVEL_SIZE     e0
 .define MAX_CRATES     1f
 
-.define SPC_ROM_SIZE 000e
+.define SPC_ROM_SIZE 5001

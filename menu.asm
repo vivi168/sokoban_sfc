@@ -46,6 +46,9 @@ EncodeStepCount:
     stx @hex_to_dec_in
     jsr @HexToDec
 
+    ; EOS
+    stz @step_count_bcd+5
+
     ; units
     lda @hex_to_dec_out
     and #0f
@@ -94,6 +97,7 @@ clear_text_buffer_loop:
     rts
 
 step_count_str: .db 53, 54, 45, 50, 20, 43, 4f, 55, 4e, 54, 3a, 20, 00
+current_level_str: .db  00
 PutStepCount:
     ldx #0000
 

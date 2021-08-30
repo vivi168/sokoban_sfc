@@ -14,7 +14,7 @@ crate_positions:          .rb MAX_CRATES
 crate_count:              .rb 1
 
 step_count:               .rb 2
-step_count_bcd:           .rb 5
+step_count_bcd:           .rb 6
 
 frame_counter:            .rb 1
 

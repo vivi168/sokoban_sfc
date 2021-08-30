@@ -44,5 +44,4 @@ MenuLoop:
     jmp @MenuLoop
 
 init_game:
-    brk 00
     jmp @InitGame
